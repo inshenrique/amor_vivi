@@ -1,0 +1,188 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: white; /* solid black background, images removed */
+  color: white;
+  font-size: 14px;
+  font-family: sans-serif;
+  overflow: auto;
+}
+a {
+  color: black;
+  font-size: 14px;
+}
+#main {
+  width: 100%;
+}
+#wrap {
+  position: relative;
+  margin: 0 auto;
+  width: 1100px;
+  height: 680px;
+  margin-top: 10px;
+}
+#text {
+  width: 430px;
+  height: 620px;
+  left: 35px;
+  top: 25px;
+  position: absolute;
+}
+#code {
+  display: none;
+  color: black;
+  font-size: 15px;
+  margin-top: 10px;
+  line-height: 20px;
+  font-weight: 400;
+}
+#clock-box {
+  position: absolute;
+  left: 60px;
+  top: 550px;
+  font-size: 28px;
+  display: none;
+}
+#clock-box a {
+  font-size: 28px;
+  text-decoration: none;
+}
+#clock {
+  margin-left: 48px;
+}
+#clock .digit {
+  font-size: 64px;
+}
+#canvas {
+  margin: 0 auto;
+  width: 1100px;
+  height: 680px;
+}
+#error {
+  margin: 0 auto;
+  text-align: center;
+  margin-top: 60px;
+  display: none;
+}
+.hand {
+  cursor: pointer;
+}
+.say {
+  margin-left: 5px;
+}
+.space {
+  margin-right: 150px;
+}
+
+#message-box{
+  position: absolute;
+  margin-top:450px;
+  font-size: 25px;
+  font-family: monospace;
+
+}
+#code strong { font-weight: 700; }
+#code .signature { display: inline-block; margin-top: 4px; font-weight: 700; }
+
+/* Contêiner neutro: no desktop mantém exatamente a área original do canvas. */
+.canvas-stage {
+  position: relative;
+  width: 1100px;
+  height: 680px;
+  margin: 0 auto;
+}
+
+/*
+ * MOBILE
+ * O canvas continua 1100x680 internamente. Apenas sua apresentação visual
+ * é ampliada e recortada de forma centralizada, sem recalcular a animação.
+ */
+@media (max-width: 700px) and (orientation: portrait) {
+  html,
+  body {
+    width: 100%;
+    min-height: 100%;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  #main {
+    width: 100vw;
+    overflow-x: hidden;
+  }
+
+  #wrap {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: auto;
+    min-height: 100vh;
+    margin: 0;
+    overflow: visible;
+  }
+
+  .canvas-stage {
+    order: 1;
+    position: relative;
+    width: 100vw;
+    height: 81.6vw; /* 132vw × 680/1100 */
+    min-height: 285px;
+    max-height: 390px;
+    overflow: hidden;
+    margin: 0 auto;
+    transition: height 0.55s ease, margin-bottom 0.55s ease;
+  }
+
+  #canvas {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 132vw;
+    height: auto;
+    margin: 0;
+    transform: translateX(-50%);
+    transform-origin: top center;
+    touch-action: manipulation;
+  }
+
+  #text {
+    order: 2;
+    display: none;
+    position: relative;
+    left: auto;
+    top: auto;
+    width: auto;
+    height: auto;
+    margin: 0;
+    padding: 0 22px 36px;
+    box-sizing: border-box;
+  }
+
+  #code {
+    font-size: 16px;
+    line-height: 1.52;
+    margin-top: 0;
+    padding-top: 0;
+  }
+
+  #code .say {
+    margin-left: 0;
+  }
+
+  #wrap.mobile-message-mode #text {
+    display: block;
+  }
+
+  /* Depois da copa pronta, a árvore sobe levemente e a carta entra abaixo. */
+  #wrap.mobile-message-mode .canvas-stage {
+    height: 72vw;
+    min-height: 250px;
+    max-height: 340px;
+    margin-bottom: 12px;
+  }
+
+  #wrap.mobile-message-mode #canvas {
+    top: -4vw;
+    transition: top 0.55s ease;
+  }
+}
