@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Viviane ❤️</title>
+    <link type="text/css" rel="stylesheet" href="file/default.css">
+    <script type="text/javascript" src="file/jquery.min.js"></script>
+    <script type="text/javascript" src="file/jscex.min.js"></script>
+    <script type="text/javascript" src="file/jscex-parser.js"></script>
+    <script type="text/javascript" src="file/jscex-jit.js"></script>
+    <script type="text/javascript" src="file/jscex-builderbase.min.js"></script>
+    <script type="text/javascript" src="file/jscex-async.min.js"></script>
+    <script type="text/javascript" src="file/jscex-async-powerpack.min.js"></script>
+    <script type="text/javascript" src="file/function.js" charset="utf-8"></script>
+    <script type="text/javascript" src="file/love.js" charset="utf-8"></script>
+</head>
+
+<body>
+    <div id="main">
+        <div id="error">Seu navegador não suporta esta animação.</div>
+        <div id="wrap">
+            <div id="text">
+                <div id="code">
+                    <span class="say"><strong>Meu amor Viviane, ❤️</strong></span><br><br>
+                    <span class="say">Só queria te lembrar de uma coisa hoje: <strong>você me faz muito feliz. Muito mesmo!</strong></span><br><br>
+                    <span class="say">Ter você ao meu lado é uma das maiores bênçãos da minha vida. Eu admiro a mulher que você é: <strong>linda, inteligente, virtuosa, trabalhadora, determinada, parceira, forte e cheia de sonhos.</strong></span><br><br>
+                    <span class="say">E sabe o que mais me faz feliz? Saber que tudo o que estamos construindo é <strong>nosso</strong>. Nossos planos, nossos projetos, nossas conquistas, nossas loucuras e até os dias difíceis. A gente enfrenta, aprende, dá risada e segue em frente.</span><br><br>
+                    <span class="say">Eu olho para nós e tenho uma certeza: <strong>vai valer a pena. Tudo.</strong></span><br><br>
+                    <span class="say">Porque no fim das contas, eu não quero apenas conquistar coisas. <strong>Quero conquistar a vida com você.</strong></span><br><br>
+                    <span class="say">Obrigado por ser minha parceira, minha companheira e a mulher que escolhi para caminhar comigo.</span><br><br>
+                    <span class="say"><strong>Eu amo você. E se eu pudesse escolher novamente, escolheria você. ❤️</strong></span><br><br>
+                    <span class="say">Agora vai lá viver o seu dia sabendo que tem um homem aqui que olha para você e pensa:</span><br>
+                    <span class="say"><strong>“Que sorte a minha.” 😘</strong></span><br><br>
+                    <span class="say signature">Seu marido Henrique</span>
+                </div>
+            </div>
+            <canvas id="canvas" width="1100" height="680"></canvas>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            var canvas = $('#canvas');
+
+            if (!canvas[0].getContext) {
+                $("#error").show();
+                return false;
+            }
+
+            var width = canvas.width();
+            var height = canvas.height();
+            canvas.attr("width", width);
+            canvas.attr("height", height);
+
+            var opts = {
+                seed: {
+                    x: width / 2 - 20,
+                    color: "rgb(190, 26, 37)",
+                    scale: 2
+                },
+                branch: [
+                    [535, 680, 570, 250, 500, 200, 30, 100, [
+                        [540, 500, 455, 417, 340, 400, 13, 100, [
+                            [450, 435, 434, 430, 394, 395, 2, 40]
+                        ]],
+                        [550, 445, 600, 356, 680, 345, 12, 100, [
+                            [578, 400, 648, 409, 661, 426, 3, 80]
+                        ]],
+                        [539, 281, 537, 248, 534, 217, 3, 40],
+                        [546, 397, 413, 247, 328, 244, 9, 80, [
+                            [427, 286, 383, 253, 371, 205, 2, 40],
+                            [498, 345, 435, 315, 395, 330, 4, 60]
+                        ]],
+                        [546, 357, 608, 252, 678, 221, 6, 100, [
+                            [590, 293, 646, 277, 648, 271, 2, 80]
+                        ]]
+                    ]]
+                ],
+                bloom: {
+                    num: 700,
+                    width: 1080,
+                    height: 650,
+                },
+                footer: {
+                    width: 1200,
+                    height: 5,
+                    speed: 10,
+                }
+            }
+
+            var tree = new Tree(canvas[0], width, height, opts);
+            var seed = tree.seed;
+            var foot = tree.footer;
+            var hold = 1;
+
+            function canvasPoint(e) {
+                var rect = canvas[0].getBoundingClientRect();
+                var clientX = e.clientX !== undefined ? e.clientX : e.pageX - window.pageXOffset;
+                var clientY = e.clientY !== undefined ? e.clientY : e.pageY - window.pageYOffset;
+                return {
+                    x: (clientX - rect.left) * (canvas[0].width / rect.width),
+                    y: (clientY - rect.top) * (canvas[0].height / rect.height)
+                };
+            }
+
+            canvas.on('click touchend', function (e) {
+                var original = e.originalEvent;
+                var pointer = original && original.changedTouches ? original.changedTouches[0] : e;
+                var point = canvasPoint(pointer), x = point.x, y = point.y;
+                if (seed.hover(x, y)) {
+                    hold = 0;
+                    canvas.off("click touchend");
+                    canvas.off("mousemove touchmove");
+                    canvas.removeClass('hand');
+                }
+            }).on('mousemove', function (e) {
+                var point = canvasPoint(e);
+                canvas.toggleClass('hand', seed.hover(point.x, point.y));
+            });
+
+            var seedAnimate = eval(Jscex.compile("async", function () {
+                seed.draw();
+                while (hold) {
+                    $await(Jscex.Async.sleep(10));
+                }
+                while (seed.canScale()) {
+                    seed.scale(0.95);
+                    $await(Jscex.Async.sleep(10));
+                }
+                while (seed.canMove()) {
+                    seed.move(0, 2);
+                    foot.draw();
+                    $await(Jscex.Async.sleep(10));
+                }
+            }));
+
+            var growAnimate = eval(Jscex.compile("async", function () {
+                do {
+                    tree.grow();
+                    $await(Jscex.Async.sleep(10));
+                } while (tree.canGrow());
+            }));
+
+            var flowAnimate = eval(Jscex.compile("async", function () {
+                do {
+                    tree.flower(2);
+                    $await(Jscex.Async.sleep(10));
+                } while (tree.canFlower());
+            }));
+
+            var moveAnimate = eval(Jscex.compile("async", function () {
+                var mobileLayout = window.matchMedia("(max-width: 768px) and (orientation: portrait)").matches;
+
+                if (mobileLayout) {
+                    $("#wrap").addClass("tree-finished");
+                    $await(Jscex.Async.sleep(800));
+                    return;
+                }
+
+                tree.snapshot("p1", 240, 0, 610, 680);
+                while (tree.move("p1", 500, 0)) {
+                    foot.draw();
+                    $await(Jscex.Async.sleep(10));
+                }
+                foot.draw();
+                tree.snapshot("p2", 500, 0, 610, 680);
+
+                canvas.parent().css("background", "url(" + tree.toDataURL('image/png') + ")");
+                canvas.css("background", "#ffe");
+                $await(Jscex.Async.sleep(300));
+                canvas.css("background", "none");
+            }));
+
+            var textAnimate = eval(Jscex.compile("async", function () {
+                $("#code").show().typewriter();
+            }));
+
+            var runAsync = eval(Jscex.compile("async", function () {
+                $await(seedAnimate());
+                $await(growAnimate());
+                $await(flowAnimate());
+                $await(moveAnimate());
+                textAnimate().start();
+            }));
+
+            runAsync().start();
+        })();
+    </script>
+</body>
+
+</html>
